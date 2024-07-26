@@ -1,5 +1,5 @@
 import pytest
-from main import hello
+from main import hello_world
 
 def test_hello():
-    assert hello() == "Hello, World!"
+    assert hello_world() == "Hello, World!"
