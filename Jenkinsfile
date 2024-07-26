@@ -2,35 +2,34 @@ pipeline {
     agent any
 
     stages {
-        stage('Clonar Repositorio') {
+        stage('Verify Tools') {
             steps {
-                git 'https://github.com/tu_usuario/tu_repositorio.git'
+                bat 'python --version'
+                bat 'pip --version'
             }
         }
-        stage('Instalar Dependencias') {
+        stage('Clone Repository') {
             steps {
-                sh 'pip install -r requirements.txt'
+                git branch: 'main', url: 'https://github.com/Alvaroph22/scripting.git'
             }
         }
-        stage('Ejecutar Pruebas Unitarias') {
+        stage('Install Dependencies') {
             steps {
-                sh 'pytest'
+                // Install Python dependencies
+                bat 'pip install -r requirements.txt'
             }
         }
-        stage('Desplegar Aplicación') {
+        stage('Compile Application') {
             steps {
-                // Aquí puedes agregar los pasos para desplegar tu aplicación
-                echo 'Desplegando la aplicación en el entorno de prueba'
-                // Ejemplo: sh 'deploy.sh'
+                // Run the Python application
+                bat 'python main.py'
             }
         }
-    }
-    post {
-        success {
-            echo 'Pipeline completado con éxito'
-        }
-        failure {
-            echo 'Pipeline fallido'
+        stage('Run Tests') {
+            steps {
+                // Run pytest
+                bat 'pytest'
+            }
         }
     }
 }
